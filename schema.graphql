@@ -1,0 +1,62 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Ad {
+    "Id of the ad"
+    id: ID!
+    "A catchy header"
+    subject: String!
+    "A descriptive text"
+    body: String!
+    "The date and time the ad was created. Example: 2021-06-01T20:53:12.969617"
+    created_at: String!
+    "Email adress to the creater of the app"
+    email: String!
+    "The price of the product in SEK"
+    price: Int
+}
+
+type AdResult {
+    success: Boolean!
+    errors: [String]
+    ad: Ad
+}
+
+type AdsResult {
+    success: Boolean!
+    errors: [String]
+    ads: [Ad]
+}
+
+enum Order {
+  ASC
+  DESC
+}
+enum SortField {
+   CREATED_AT,
+   PRICE
+}
+
+input SortBy {
+  "Ad field to sort on"
+  field: SortField!
+  "Sort order"
+  order: Order!
+}
+
+type Query {
+    "List all ads sorted with the given order"
+    listAds(sortBy: SortBy!): AdsResult!
+    "Get an ad by Id"
+    getAd(id: ID!): AdResult!
+}
+
+type Mutation {
+    "Create a new add"
+    createAd(subject: String!, body: String!, email: String!, price:Int): AdResult!
+    "Delete an add by id"
+    deleteAd(id: ID): AdResult!
+}
+
